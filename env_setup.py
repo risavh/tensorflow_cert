@@ -29,3 +29,15 @@ if __name__ == '__main__':
     print_hi('PyCharm')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+
+# Hi, PyCharm
+# __________________________________________________
+# Pyton version 3.8.0 (tags/v3.8.0:fa919fd, Oct 14 2019, 19:37:50) [MSC v.1916 64 bit (AMD64)]
+# Tensorflow version 2.5.0
+# TFDS version 4.3.0
+# Numpy version 1.19.5
+# Pandas version 1.2.4
+# PIL version 8.2.0
+# __________________________________________________
