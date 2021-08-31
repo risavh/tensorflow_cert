@@ -29,7 +29,7 @@ sentence_1=[
 sequences_1 = token_ins.texts_to_sequences(sentence_1)
 print(sequences_1)
 
-print("="*50)
+print("="*60)
 print("Try-3 with OOV Token")
 sentence=[
     "I love my dog!",
