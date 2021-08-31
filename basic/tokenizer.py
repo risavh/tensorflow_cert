@@ -31,7 +31,6 @@ print(sequences_1)
 
 print("="*50)
 print("Try-3 with OOV Token")
-gi
 sentence=[
     "I love my dog!",
     "i, Love My cAt"
