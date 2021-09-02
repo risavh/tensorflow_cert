@@ -92,7 +92,7 @@ checkpointer = tf.keras.callbacks.ModelCheckpoint(filepath = 'model_zero7.{epoch
                                verbose=1,
                                save_best_only=True, save_weights_only = True)
 
-max_epochs=10
+max_epochs=30
 history = model.fit(padded_train_seq,y_train, epochs= max_epochs, validation_data=(padded_test_seq,y_test)
                     #,callbacks=[get_callbacks(),reduce_lr,checkpointer]
 )
@@ -146,3 +146,82 @@ out_m.close()
 out_v.close()
 
 
+## Model-2 ( Lets Try LSTM)
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Embedding(vocab_size, embeding_dims, input_length=max_length))
+model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)))
+model.add(tf.keras.layers.Dense(32,activation='relu'))
+model.add(tf.keras.layers.Dense(1))
+model.summary()
+
+model.compile(optimizer='adam',loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),metrics=['accuracy'])
+
+max_epochs=30
+history = model.fit(padded_train_seq,y_train, epochs= max_epochs, validation_data=(padded_test_seq,y_test)
+                    #,callbacks=[get_callbacks(),reduce_lr,checkpointer]
+)
+
+import matplotlib.pyplot as plt
+
+fig,ax=plt.subplots(1,2,figsize=(12,5))
+epochs=range(len(history.history['accuracy']))
+
+ax[0].plot(epochs,history.history['accuracy'],label='train',lw=2,marker='o',color='tomato')
+ax[0].plot(epochs,history.history['val_accuracy'],label='val',lw=2,marker='*',color='teal')
+ax[0].set_title('Accuracy')
+ax[0].set_ylabel('Accuracy')
+ax[0].set_xlabel('Epochs')
+ax[0].legend()
+
+
+ax[1].plot(epochs,history.history['loss'],label='train',lw=2,marker='o',color='tomato')
+ax[1].plot(epochs,history.history['val_loss'],label='val',lw=2,marker='o',color='teal')
+ax[1].set_title('Loss')
+ax[1].legend()
+
+ax[1].set_ylabel('Loss')
+ax[1].set_xlabel('Epochs')
+plt.suptitle('Learning Curves')
+plt.show()
+
+
+## Model-3
+
+model = tf.keras.models.Sequential()
+model.add(tf.keras.layers.Embedding(vocab_size, embeding_dims,input_length=max_length))
+model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64,return_sequences=True)))
+model.add(tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(64)))
+model.add(tf.keras.layers.Dense(64,activation='relu'))
+model.add(tf.keras.layers.Dense(1))
+model.summary()
+
+model.compile(optimizer='adam',loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),metrics=['accuracy'])
+
+max_epochs=30
+history = model.fit(padded_train_seq,y_train, epochs= max_epochs, validation_data=(padded_test_seq,y_test)
+                    #,callbacks=[get_callbacks(),reduce_lr,checkpointer]
+)
+
+import matplotlib.pyplot as plt
+
+fig,ax=plt.subplots(1,2,figsize=(12,5))
+epochs=range(len(history.history['accuracy']))
+
+ax[0].plot(epochs,history.history['accuracy'],label='train',lw=2,marker='o',color='tomato')
+ax[0].plot(epochs,history.history['val_accuracy'],label='val',lw=2,marker='*',color='teal')
+ax[0].set_title('Accuracy')
+ax[0].set_ylabel('Accuracy')
+ax[0].set_xlabel('Epochs')
+ax[0].legend()
+
+
+ax[1].plot(epochs,history.history['loss'],label='train',lw=2,marker='o',color='tomato')
+ax[1].plot(epochs,history.history['val_loss'],label='val',lw=2,marker='o',color='teal')
+ax[1].set_title('Loss')
+ax[1].legend()
+
+ax[1].set_ylabel('Loss')
+ax[1].set_xlabel('Epochs')
+plt.suptitle('Learning Curves')
+plt.show()
