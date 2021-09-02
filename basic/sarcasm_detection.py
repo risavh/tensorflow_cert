@@ -48,9 +48,9 @@ print("X_test: {}, y_test: {}".format(X_test.shape,y_test.shape))
 
 ## Tokenization
 
-vocab_size = 10000
+vocab_size = 1000
 embeding_dims = 16
-max_length = 50
+max_length = 16
 trunc_type='post'
 padding_type= 'post'
 oov_token = '<OOV>'
@@ -92,8 +92,10 @@ checkpointer = tf.keras.callbacks.ModelCheckpoint(filepath = 'model_zero7.{epoch
                                verbose=1,
                                save_best_only=True, save_weights_only = True)
 
-max_epochs=30
-history = model.fit(padded_train_seq,y_train, epochs= max_epochs, validation_data=(padded_test_seq,y_test),callbacks=[get_callbacks(),reduce_lr,checkpointer])
+max_epochs=10
+history = model.fit(padded_train_seq,y_train, epochs= max_epochs, validation_data=(padded_test_seq,y_test)
+                    #,callbacks=[get_callbacks(),reduce_lr,checkpointer]
+)
 
 import matplotlib.pyplot as plt
 
@@ -117,4 +119,30 @@ ax[1].set_ylabel('Loss')
 ax[1].set_xlabel('Epochs')
 plt.suptitle('Learning Curves')
 plt.show()
+
+
+## Embedding Layers
+ymca=10
+e = model.get_layer('embedding')
+embed_wt= e.get_weights()
+print('Embedding Weight: {}'.format(embed_wt[0].shape))
+
+reverse_word_idx = {v:k for k,v in tokenObj.word_index.items()}
+
+
+import io
+
+out_v=io.open('vetc.tsv','w',encoding='utf-8')
+out_m=io.open('meta.tsv','w',encoding='utf-8')
+
+for i in range(1,vocab_size):
+    word = reverse_word_idx[i]
+    embed = embed_wt[0][i]
+
+    out_m.write(word + "\n")
+    out_v.write(  "\t".join([str(x) for x in embed]) + "\n")
+
+out_m.close()
+out_v.close()
+
 
