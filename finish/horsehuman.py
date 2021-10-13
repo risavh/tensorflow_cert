@@ -53,7 +53,7 @@ title = 'Training Data'
 #visualize_data(labels, dir, title)
 
 train_generator= tensorflow.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
-valid_generator= tensorflow.keras.preprocessing.image.ImageDataGenerator()
+valid_generator= tensorflow.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)
 
 
 train_datagen = train_generator.flow_from_directory(train_dir,
@@ -89,7 +89,7 @@ validation_steps=256//32 ## (number of validation records/ batch_size)
 print('steps_per_epoch: {}, validation_steps: {}'.format(steps_per_epoch,validation_steps))
 
 
-model.compile(loss=tf.keras.losses.BinaryCrossentropy(),optimizer='adam',metrics=['accuracy'])
+model.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
 
 model.fit(train_datagen,epochs=3,validation_data=valid_datagen,steps_per_epoch=steps_per_epoch,
           validation_steps=validation_steps)
