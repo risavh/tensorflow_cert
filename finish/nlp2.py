@@ -46,14 +46,14 @@ print(pad_seq_train[:2])
 
 model = tf.keras.models.Sequential()
 model.add(tf.keras.layers.Embedding(vocab_size,embeding_dim,input_length=max_length))
-model.add(tf.keras.layers.Flatten())
+model.add(tf.keras.layers.GlobalAveragePooling1D())
 model.add(tf.keras.layers.Dense(6,activation='relu'))
 model.add(tf.keras.layers.Dense(1,activation='sigmoid'))
 model.summary()
 
 model.compile(loss=tf.keras.losses.BinaryCrossentropy(),optimizer='adam',metrics=['accuracy'])
 
-model.fit(pad_seq_train,train_labels,epochs=10,validation_data=(pad_seq_test,test_labels))
+model.fit(pad_seq_train,train_labels,epochs=5,validation_data=(pad_seq_test,test_labels))
 
 model.evaluate((pad_seq_test,test_labels))
 
